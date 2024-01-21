@@ -9,7 +9,7 @@ const maxAge = 3 * 24 * 60 * 60;
 
 // To create jwt Token
 const createToken = (id) => {
-  return jwt.sign({ id }, process.env.SECRET, { expiresIn: maxAge });
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: maxAge });
 };
 
 const registerUser = async (req, res) => {
@@ -124,4 +124,20 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser };
+const logoutUser = async (req, res) => {
+  try {
+    const token = req.cookies.jwt_token;
+
+    if (!token) {
+      return res.status(400).json({ message: "User not logged in" });
+    }
+
+    res.cookie("jwt_token", "", { maxAge: 1 });
+    res.status(200).json({ message: "User logged out successfully" });
+  } catch (error) {
+    console.log("Error in logging out user: ", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+module.exports = { registerUser, loginUser, logoutUser };
