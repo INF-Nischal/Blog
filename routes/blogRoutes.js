@@ -8,8 +8,8 @@ const {
 } = require("../controllers/blogControllers");
 const verifyToken = require("../middlewares/authMiddleware");
 
-blogRouter.get("/blogAll", verifyToken, getAllBlogs);
-blogRouter.get("/getBlog/:id", verifyToken, getBlogById);
+blogRouter.get("/blogAll", getAllBlogs);
+blogRouter.get("/getBlog/:id", getBlogById);
 blogRouter.post("/newBlog", verifyToken, createBlog);
 blogRouter.delete("/deleteBlog/:id", verifyToken, deleteBlog);
 
